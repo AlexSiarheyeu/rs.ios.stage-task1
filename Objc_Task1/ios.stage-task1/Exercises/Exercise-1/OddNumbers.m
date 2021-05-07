@@ -11,7 +11,18 @@
 @implementation OddNumbers
 
 - (NSInteger)oddNumbers:(NSArray <NSNumber *> *)array {
-    return -1;
+    
+    NSMutableArray *resultArray = [NSMutableArray new];
+    
+    for (NSNumber *digit in array) {
+        
+        if (digit.intValue % 2 != 0)  {
+            [resultArray addObject:digit];
+        }
+    }
+    
+    return  resultArray.count;
+
 }
 
 @end
