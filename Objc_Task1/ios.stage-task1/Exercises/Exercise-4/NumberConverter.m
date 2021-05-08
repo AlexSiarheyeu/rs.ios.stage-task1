@@ -3,25 +3,44 @@
 @implementation NumberConverter
 
 - (NSArray *)numberConverter:(NSNumber *)number {
-        
-    NSMutableArray *dome = [NSMutableArray new];
+
     NSString *stringValue = [number stringValue];
+    NSString *cleanString = @"";
     
-    unsigned int len = [stringValue length];
-    char buffer[len];
-    
-    [stringValue getCharacters:buffer range:NSMakeRange(0, len)];
-    
-    for(int i = 0; i < len; ++i) {
-       char current = buffer[i];
-        [dome addObject: [NSString stringWithFormat:@"%C", [stringValue characterAtIndex:current]]];
+    if ([stringValue hasPrefix:@"-"]) {
+        
+        cleanString = [stringValue substringFromIndex:1];
+        return [self convertStringDependingOnFirstCharacter:cleanString];
+        
+    } else {
+        
+        cleanString = stringValue;
+        return [self convertStringDependingOnFirstCharacter:cleanString];
     }
     
-    for (int i = 0; i<10; i++) {
-        [dome exchangeObjectAtIndex:0 withObjectAtIndex:dome.count-1];
+    return  nil;
+}
+
+- (NSArray *) convertStringDependingOnFirstCharacter: (NSString *)string  {
+    
+    NSMutableArray* resultArray = [NSMutableArray new];
+    NSString *reversedString = @"";
+    
+    for (int i = 0; i < string.length; i++) {
+        reversedString = [NSMutableString stringWithFormat:@"%c%@", [string characterAtIndex:i], reversedString];
     }
     
-    return dome;
+    NSInteger lengthOfReversedString = [reversedString length];
+    unichar concreteCharacter[lengthOfReversedString + 1];
+    
+    [reversedString getCharacters:concreteCharacter
+                    range: NSMakeRange(0, lengthOfReversedString)];
+    
+    for (int i = 0; i < lengthOfReversedString; i++) {
+        [resultArray addObject: [NSString stringWithFormat:@"%C", concreteCharacter[i]]];
+    }
+    
+    return resultArray;
 }
 
 @end
